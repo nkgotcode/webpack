@@ -1,5 +1,59 @@
 # webpack
 
+## 5.108.0
+
+### Minor Changes
+
+- Support JSON Schema `const` when generating CLI flags from a schema. (by [@alexander-akait](https://github.com/alexander-akait) in [#21087](https://github.com/webpack/webpack/pull/21087))
+
+- Support JSON Schema `if`/`then`/`else` when generating CLI flags from a schema. (by [@alexander-akait](https://github.com/alexander-akait) in [#21087](https://github.com/webpack/webpack/pull/21087))
+
+- Support `.html`/`.css` for the default `./src` entry under the html/css experiments. (by [@alexander-akait](https://github.com/alexander-akait) in [#21039](https://github.com/webpack/webpack/pull/21039))
+
+- Add HMR support for HTML modules with body/title DOM patching on update. (by [@alexander-akait](https://github.com/alexander-akait) in [#21011](https://github.com/webpack/webpack/pull/21011))
+
+- Add `module.parser.html.sources` option to disable or customize URL-attribute extraction for HTML modules, with `script` / `script-module` / `stylesheet` / `stylesheet-inline` types for custom attributes (by [@alexander-akait](https://github.com/alexander-akait) in [#21022](https://github.com/webpack/webpack/pull/21022))
+
+- Add `module.parser.html.template` option to transform HTML module source before parsing. (by [@alexander-akait](https://github.com/alexander-akait) in [#21055](https://github.com/webpack/webpack/pull/21055))
+
+- Support `optimization.inlineExports` for better tree-shaking. (by [@hai-x](https://github.com/hai-x) in [#20973](https://github.com/webpack/webpack/pull/20973))
+
+- Allow tree-shaking unused calls to `/*#__NO_SIDE_EFFECTS__*/`-annotated (pure) exports across module boundaries. (by [@hai-x](https://github.com/hai-x) in [#20907](https://github.com/webpack/webpack/pull/20907))
+
+- Add `output.environment.let` option (paired with target's `let` capability) and emit `let`/`const` instead of `var` in generated runtime code wherever it is safe. Bindings that may be wrapped in runtime-condition `if` blocks (harmony imports, ConcatenatedModule external imports) continue to use `var` to preserve function scoping. (by [@alexander-akait](https://github.com/alexander-akait) in [#21010](https://github.com/webpack/webpack/pull/21010))
+
+- Add `module.parser.javascript.pureFunctions` to mark top-level names as side-effect-free for tree shaking. (by [@hai-x](https://github.com/hai-x) in [#21063](https://github.com/webpack/webpack/pull/21063))
+
+- Add `output.strictModuleResolution` to gate the runtime `MODULE_NOT_FOUND` guard. (by [@hai-x](https://github.com/hai-x) in [#21067](https://github.com/webpack/webpack/pull/21067))
+
+### Patch Changes
+
+- Include the schema origin path in conflicting-schema CLI argument errors. (by [@alexander-akait](https://github.com/alexander-akait) in [#21087](https://github.com/webpack/webpack/pull/21087))
+
+- Reject `__proto__`, `constructor` and `prototype` path segments in `cli.processArguments` to prevent prototype pollution. (by [@alexander-akait](https://github.com/alexander-akait) in [#21057](https://github.com/webpack/webpack/pull/21057))
+
+- Speed up `Compilation.deleteAsset` and `Compilation.renameAsset` via a lazy reverse index from asset file name to containing chunks. (by [@alexander-akait](https://github.com/alexander-akait) in [#21035](https://github.com/webpack/webpack/pull/21035))
+
+- Resolve `[fullhash]` in `url()` public paths for inlined CSS export types (`style`/`text`/`css-style-sheet`) at runtime. (by [@alexander-akait](https://github.com/alexander-akait) in [#21054](https://github.com/webpack/webpack/pull/21054))
+
+- Cache CSS public-path placeholder offsets per module source to avoid re-materializing and re-scanning the source on every render. (by [@alexander-akait](https://github.com/alexander-akait) in [#21054](https://github.com/webpack/webpack/pull/21054))
+
+- Resolve `DefinePlugin` access to an undefined object member as `undefined`. (by [@alexander-akait](https://github.com/alexander-akait) in [#21040](https://github.com/webpack/webpack/pull/21040))
+
+- perf: guard isDeferred() behind experiments.deferImport in ConcatenatedModule (by [@shashank-u03](https://github.com/shashank-u03) in [#21096](https://github.com/webpack/webpack/pull/21096))
+
+- Avoid redundant HTML module work: reuse the dependency-template render across the JS and HTML code-generation passes, and memoize sentinel resolution/content hashing per source. (by [@alexander-akait](https://github.com/alexander-akait) in [#21054](https://github.com/webpack/webpack/pull/21054))
+
+- Move the `hot` flag from `Module` to `NormalModule`, where it's actually read and written. (by [@alexander-akait](https://github.com/alexander-akait) in [#21028](https://github.com/webpack/webpack/pull/21028))
+
+- Avoid `ProvidePlugin` injection for local CommonJS require bindings that use the same variable name. (by [@fireairforce](https://github.com/fireairforce) in [#21041](https://github.com/webpack/webpack/pull/21041))
+
+- Cache re-export target resolution in SideEffectsFlagPlugin for faster builds. (by [@alexander-akait](https://github.com/alexander-akait) in [#21085](https://github.com/webpack/webpack/pull/21085))
+
+- Skip pure single-star passthrough modules for `export *` re-exports. (by [@alexander-akait](https://github.com/alexander-akait) in [#21085](https://github.com/webpack/webpack/pull/21085))
+
+- Use value descriptors instead of getters for const export bindings. (by [@xiaoxiaojx](https://github.com/xiaoxiaojx) in [#21021](https://github.com/webpack/webpack/pull/21021))
+
 ## 5.107.2
 
 ### Patch Changes
