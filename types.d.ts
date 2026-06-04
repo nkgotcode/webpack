@@ -18189,6 +18189,11 @@ declare interface Output {
 	publicPath?: string | TemplatePathFn<PathData>;
 
 	/**
+	 * Project-wide defaults for `webpackPrefetch` / `webpackPreload` / `webpackFetchPriority` on URL-referenced assets (e.g. `new URL(..., import.meta.url)`, `url(...)` in CSS). Per-call magic comments still take precedence. Pass an array to scope hints to specific asset paths via `test` / `include` / `exclude`.
+	 */
+	resourceHints?: ResourceHintsRule | ResourceHintsRule[];
+
+	/**
 	 * This option enables loading async chunks via a custom script type, such as script type="module".
 	 */
 	scriptType?: false | "module" | "text/javascript";
@@ -18502,6 +18507,11 @@ declare interface OutputNormalized {
 	 * The 'publicPath' specifies the public URL address of the output files when referenced in a browser.
 	 */
 	publicPath?: string | TemplatePathFn<PathData>;
+
+	/**
+	 * Project-wide defaults for `webpackPrefetch` / `webpackPreload` / `webpackFetchPriority` on URL-referenced assets (e.g. `new URL(..., import.meta.url)`, `url(...)` in CSS). Per-call magic comments still take precedence. Pass an array to scope hints to specific asset paths via `test` / `include` / `exclude`.
+	 */
+	resourceHints?: ResourceHintsRule | ResourceHintsRule[];
 
 	/**
 	 * This option enables loading async chunks via a custom script type, such as script type="module".
@@ -21091,6 +21101,56 @@ declare interface ResourceDataWithData {
 	fragment?: string;
 	context?: string;
 	data: ResourceSchemeData & Partial<ResolveRequest>;
+}
+
+/**
+ * One resource-hint default rule. `test` / `include` / `exclude` match against the asset's request; omit all three to apply to every asset.
+ */
+declare interface ResourceHintsRule {
+	/**
+	 * A condition matcher.
+	 */
+	exclude?:
+		| string
+		| RegExp
+		| ((value: string) => boolean)
+		| RuleSetLogicalConditions
+		| RuleSetCondition[];
+
+	/**
+	 * Default fetchpriority for prefetch / preload links.
+	 */
+	fetchPriority?: false | "auto" | "low" | "high";
+
+	/**
+	 * A condition matcher.
+	 */
+	include?:
+		| string
+		| RegExp
+		| ((value: string) => boolean)
+		| RuleSetLogicalConditions
+		| RuleSetCondition[];
+
+	/**
+	 * When true, emit `<link rel="prefetch">` for matching assets without an explicit hint comment.
+	 */
+	prefetch?: boolean;
+
+	/**
+	 * When true, emit `<link rel="preload">` for matching assets without an explicit hint comment.
+	 */
+	preload?: boolean;
+
+	/**
+	 * A condition matcher.
+	 */
+	test?:
+		| string
+		| RegExp
+		| ((value: string) => boolean)
+		| RuleSetLogicalConditions
+		| RuleSetCondition[];
 }
 declare interface ResourceSchemeData {
 	/**
@@ -25583,8 +25643,10 @@ declare namespace exports {
 		export let moduleLoaded: "module.loaded";
 		export let nodeModuleDecorator: "__webpack_require__.nmd";
 		export let onChunksLoaded: "__webpack_require__.O";
+		export let prefetchAsset: "__webpack_require__.PA";
 		export let prefetchChunk: "__webpack_require__.E";
 		export let prefetchChunkHandlers: "__webpack_require__.F";
+		export let preloadAsset: "__webpack_require__.LA";
 		export let preloadChunk: "__webpack_require__.G";
 		export let preloadChunkHandlers: "__webpack_require__.H";
 		export let publicPath: "__webpack_require__.p";
@@ -25597,6 +25659,7 @@ declare namespace exports {
 		export let setAnonymousDefaultName: "__webpack_require__.dn";
 		export let shareScopeMap: "__webpack_require__.S";
 		export let startup: "__webpack_require__.x";
+		export let startupAssetHints: "__webpack_require__.SAH";
 		export let startupEntrypoint: "__webpack_require__.X";
 		export let startupNoDefault: "__webpack_require__.x (no default handler)";
 		export let startupOnlyAfter: "__webpack_require__.x (only after)";
